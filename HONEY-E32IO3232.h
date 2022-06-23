@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 String boardName = "HONEY-E32IO3232";
-#define PIN_RUN = 2;
-#define PIN_BTN = 0;
+#define PIN_RUN 2;
+#define PIN_BTN 0;
 
 uint8_t PIN_X[32] = {0};
 uint8_t PIN_Y[32] = {0};
