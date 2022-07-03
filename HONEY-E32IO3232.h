@@ -61,17 +61,24 @@ void _setup()
     pinMode(PIN_INPLOAD, OUTPUT);  // set output
     pinMode(PIN_INCLOCK, OUTPUT);  // set output
     pinMode(PIN_INENABLE, OUTPUT); // set output
+    
+    xTaskCreate([](void*) {
+      while ( true ) {
+        _update();
+        vTaskDelay(5);
+      }
+    }, "task_loop", 4096, NULL, 1, NULL);
 }
 void _digitalWrite(uint8_t _y, bool state)
 {
     if (_y < 0 || _y > 32)
         _y = 0;
     PIN_Y[_y] = state;
-    _update();
+//     _update();
 }
 bool _digitalRead(uint8_t _x)
 {
-    _update();
+//     _update();
     if (_x < 0 || _x > 32)
         _x = 0;
     return PIN_X[_x];
