@@ -19,8 +19,11 @@ uint8_t PIN_Y[32] = {0};
 #define PIN_INCLOCK 33
 #define PIN_INENABLE 32
 
+xSemaphoreHandle xMutex;
+
 void _update()
 {
+    xSemaphoreTake(xMutex, portMAX_DELAY);
     digitalWrite(PIN_INENABLE, HIGH);
     digitalWrite(PIN_INPLOAD, LOW);
     delayMicroseconds(5);
@@ -47,6 +50,7 @@ void _update()
         digitalWrite(PIN_OUTCLOCK, LOW);
     }
     digitalWrite(PIN_OUTLATCH, HIGH);
+    xSemaphoreGive(xMutex);
 }
 void _setup()
 {
@@ -61,6 +65,8 @@ void _setup()
     pinMode(PIN_INPLOAD, OUTPUT);  // set output
     pinMode(PIN_INCLOCK, OUTPUT);  // set output
     pinMode(PIN_INENABLE, OUTPUT); // set output
+    
+    xMutex = xSemaphoreCreateMutex();
     
     xTaskCreate([](void*) {
       while ( true ) {
